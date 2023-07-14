@@ -68,7 +68,7 @@ module Settings
   # Note that this isn't perfect. Essentials doesn't accurately replicate every
   # single generation's mechanics. It's considered to be good enough. Only
   # generations 5 and later are reasonably supported.
-  MECHANICS_GENERATION = 5
+  MECHANICS_GENERATION = 6
 
   #=============================================================================
 
@@ -115,7 +115,7 @@ module Settings
   # The maximum length, in characters, that the player's name can be.
   MAX_PLAYER_NAME_SIZE = 10
   # The maximum number of Pokémon that can be in the party.
-  MAX_PARTY_SIZE = 6
+  MAX_PARTY_SIZE = 8
 
   #=============================================================================
 

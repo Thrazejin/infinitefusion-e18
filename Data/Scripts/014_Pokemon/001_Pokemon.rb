@@ -107,7 +107,7 @@ class Pokemon
   # Maximum length a Pokémon's nickname can be
   MAX_NAME_SIZE = 16
   # Maximum number of moves a Pokémon can know at once
-  MAX_MOVES = 4
+  MAX_MOVES = 6
 
   S_CHANCE_VALIDATOR = 16
 

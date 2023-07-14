@@ -242,9 +242,9 @@ class FightMenuDisplay < BattleMenuBase
         button = SpriteWrapper.new(viewport)
         button.bitmap = @buttonBitmap.bitmap
         button.x      = self.x+4
-        button.x      += (((i%2)==0) ? 0 : @buttonBitmap.width/2-4)
+        button.x      += getGetButtonXAdd(i)
         button.y      = self.y+6
-        button.y      += (((i/2)==0) ? 0 : BUTTON_HEIGHT-4)
+        button.y      += (((i/3)==0) ? 0 : BUTTON_HEIGHT-4)
         button.src_rect.width  = @buttonBitmap.width/2
         button.src_rect.height = BUTTON_HEIGHT
         addSprite("button_#{i}",button)
@@ -293,13 +293,24 @@ class FightMenuDisplay < BattleMenuBase
       # Create command window (shows moves)
       @cmdWindow = Window_CommandPokemon.newWithSize([],
          self.x,self.y,320,Graphics.height-self.y,viewport)
-      @cmdWindow.columns       = 2
+      @cmdWindow.columns       = 3
       @cmdWindow.columnSpacing = 4
       @cmdWindow.ignore_input  = true
       pbSetNarrowFont(@cmdWindow.contents)
       addSprite("cmdWindow",@cmdWindow)
     end
     self.z = z
+  end
+
+  def getGetButtonXAdd(index)
+    add = 0
+    case index
+    when 1,4
+      add = @buttonBitmap.width/2-4
+    when 2,5
+      add = (@buttonBitmap.width * 2)/2-4
+    end
+    return add
   end
 
   def dispose
@@ -336,7 +347,7 @@ class FightMenuDisplay < BattleMenuBase
     if !USE_GRAPHICS
       # Fill in command window
       commands = []
-      for i in 0...[4, moves.length].max
+      for i in 0...[6, moves.length].max
         commands.push((moves[i]) ? moves[i].name : "-")
       end
       @cmdWindow.commands = commands

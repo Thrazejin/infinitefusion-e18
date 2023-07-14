@@ -7,19 +7,21 @@ module GameData
     attr_reader :pseudo_type
     attr_reader :weaknesses
     attr_reader :resistances
+    attr_reader :doubleResistances
     attr_reader :immunities
 
     DATA = {}
     DATA_FILENAME = "types.dat"
 
     SCHEMA = {
-      "Name"          => [1, "s"],
-      "InternalName"  => [2, "s"],
-      "IsPseudoType"  => [3, "b"],
-      "IsSpecialType" => [4, "b"],
-      "Weaknesses"    => [5, "*s"],
-      "Resistances"   => [6, "*s"],
-      "Immunities"    => [7, "*s"]
+      "Name"              => [1, "s"],
+      "InternalName"      => [2, "s"],
+      "IsPseudoType"      => [3, "b"],
+      "IsSpecialType"     => [4, "b"],
+      "Weaknesses"        => [5, "*s"],
+      "Resistances"       => [6, "*s"],
+      "DoubleResistances" => [7, "*s"],
+      "Immunities"        => [8, "*s"]
     }
 
     extend ClassMethods
@@ -35,6 +37,8 @@ module GameData
       @weaknesses   = [@weaknesses] if !@weaknesses.is_a?(Array)
       @resistances  = hash[:resistances]  || []
       @resistances  = [@resistances] if !@resistances.is_a?(Array)
+      @doubleResistances  = hash[:doubleResistances]  || []
+      @doubleResistances  = [@doubleResistances] if !@doubleResistances.is_a?(Array)
       @immunities   = hash[:immunities]   || []
       @immunities   = [@immunities] if !@immunities.is_a?(Array)
     end
@@ -51,6 +55,7 @@ module GameData
       return Effectiveness::NORMAL_EFFECTIVE_ONE if !other_type
       return Effectiveness::SUPER_EFFECTIVE_ONE if @weaknesses.include?(other_type)
       return Effectiveness::NOT_VERY_EFFECTIVE_ONE if @resistances.include?(other_type)
+      return Effectiveness::SUPER_NOT_VERY_EFFECTIVE_ONE if @doubleResistances.include?(other_type)
       return Effectiveness::INEFFECTIVE if @immunities.include?(other_type)
       return Effectiveness::NORMAL_EFFECTIVE_ONE
     end
@@ -60,11 +65,12 @@ end
 #===============================================================================
 
 module Effectiveness
-  INEFFECTIVE            = 0
-  NOT_VERY_EFFECTIVE_ONE = 1
-  NORMAL_EFFECTIVE_ONE   = 2
-  SUPER_EFFECTIVE_ONE    = 4
-  NORMAL_EFFECTIVE       = NORMAL_EFFECTIVE_ONE ** 3
+  INEFFECTIVE                  = 0
+  NOT_VERY_EFFECTIVE_ONE       = 1
+  SUPER_NOT_VERY_EFFECTIVE_ONE = 0.5
+  NORMAL_EFFECTIVE_ONE         = 2
+  SUPER_EFFECTIVE_ONE          = 4
+  NORMAL_EFFECTIVE             = NORMAL_EFFECTIVE_ONE ** 3
 
   module_function
 
@@ -78,6 +84,10 @@ module Effectiveness
 
   def resistant?(value)
     return value < NORMAL_EFFECTIVE
+  end
+
+  def superResistant?(value)
+    return value < SUPER_NOT_VERY_EFFECTIVE_ONE
   end
 
   def normal?(value)
@@ -101,6 +111,11 @@ module Effectiveness
   def resistant_type?(attack_type, defend_type1, defend_type2 = nil, defend_type3 = nil)
     value = calculate(attack_type, defend_type1, defend_type2, defend_type3)
     return resistant?(value)
+  end
+
+  def superResistant_type?(attack_type, defend_type1, defend_type2 = nil, defend_type3 = nil)
+    value = calculate(attack_type, defend_type1, defend_type2, defend_type3)
+    return superResistant?(value)
   end
 
   def normal_type?(attack_type, defend_type1, defend_type2 = nil, defend_type3 = nil)

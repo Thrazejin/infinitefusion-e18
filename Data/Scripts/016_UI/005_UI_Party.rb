@@ -195,7 +195,8 @@ class PokemonPartyPanel < SpriteWrapper
     @active = (index == 0) # true = rounded panel, false = rectangular panel
     @refreshing = true
     self.x = (index % 2) * Graphics.width / 2
-    self.y = 16 * (index % 2) + 96 * (index / 2)
+    self.y = 4 * (index % 2) + 92 * (index / 2)
+    # 16 * (index % 2) + 96 * (index / 2)
     @panelbgsprite = ChangelingSprite.new(0, 0, viewport)
     @panelbgsprite.z = self.z
     if @active # Rounded panel

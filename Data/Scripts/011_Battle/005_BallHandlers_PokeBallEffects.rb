@@ -104,15 +104,15 @@ BallHandlers::IsUnconditional.add(:MASTERBALL,proc { |ball,battle,battler|
 #       elsewhere to 0.1x.
 #===============================================================================
 BallHandlers::ModifyCatchRate.add(:GREATBALL,proc { |ball,catchRate,battle,battler,ultraBeast|
-  next catchRate*1.5
-})
-
-BallHandlers::ModifyCatchRate.add(:ULTRABALL,proc { |ball,catchRate,battle,battler,ultraBeast|
   next catchRate*2
 })
 
+BallHandlers::ModifyCatchRate.add(:ULTRABALL,proc { |ball,catchRate,battle,battler,ultraBeast|
+  next catchRate*3.5
+})
+
 BallHandlers::ModifyCatchRate.add(:SAFARIBALL,proc { |ball,catchRate,battle,battler,ultraBeast|
-  next catchRate*1.5
+  next catchRate*3
 })
 
 BallHandlers::ModifyCatchRate.add(:NETBALL,proc { |ball,catchRate,battle,battler,ultraBeast|

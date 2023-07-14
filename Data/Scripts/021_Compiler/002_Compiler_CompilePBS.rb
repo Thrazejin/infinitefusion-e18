@@ -159,7 +159,7 @@ module Compiler
           value = nil if value.is_a?(Array) && value.length == 0
           contents[key] = value
           # Ensure weaknesses/resistances/immunities are in arrays and are symbols
-          if value && ["Weaknesses", "Resistances", "Immunities"].include?(key)
+          if value && ["Weaknesses", "Resistances", "Immunities", "DoubleResistances"].include?(key)
             contents[key] = [contents[key]] if !contents[key].is_a?(Array)
             contents[key].map! { |x| x.to_sym }
             contents[key].uniq!
@@ -168,14 +168,15 @@ module Compiler
         # Construct type hash
         type_symbol = contents["InternalName"].to_sym
         type_hash = {
-          :id           => type_symbol,
-          :id_number    => type_number,
-          :name         => contents["Name"],
-          :pseudo_type  => contents["IsPseudoType"],
-          :special_type => contents["IsSpecialType"],
-          :weaknesses   => contents["Weaknesses"],
-          :resistances  => contents["Resistances"],
-          :immunities   => contents["Immunities"]
+          :id                => type_symbol,
+          :id_number         => type_number,
+          :name              => contents["Name"],
+          :pseudo_type       => contents["IsPseudoType"],
+          :special_type      => contents["IsSpecialType"],
+          :weaknesses        => contents["Weaknesses"],
+          :resistances       => contents["Resistances"],
+          :doubleResistances => contents["DoubleResistances"],
+          :immunities        => contents["Immunities"]
         }
         # Add type's data to records
         GameData::Type.register(type_hash)

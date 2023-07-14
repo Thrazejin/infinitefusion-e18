@@ -95,17 +95,21 @@ class PokeBattle_Scene
       # General update
       pbUpdate(cw)
       # Update selected command
+      leftEnabled = [1,2,4,5]
+      rightEnabled = [0,1,3,4]
+      upEnabled = [3,4,5]
+      downEnabled = [0,1,2]
       if Input.trigger?(Input::LEFT)
-        cw.index -= 1 if (cw.index&1)==1
+        cw.index -= 1 if leftEnabled.include?(cw.index)
       elsif Input.trigger?(Input::RIGHT)
         if battler.moves[cw.index+1] && battler.moves[cw.index+1].id
-          cw.index += 1 if (cw.index&1)==0
+          cw.index += 1 if rightEnabled.include?(cw.index)
         end
       elsif Input.trigger?(Input::UP)
-        cw.index -= 2 if (cw.index&2)==2
+        cw.index -= 3 if (cw.index&2)==2
       elsif Input.trigger?(Input::DOWN)
         if battler.moves[cw.index+2] && battler.moves[cw.index+2].id
-          cw.index += 2 if (cw.index&2)==0
+          cw.index += 3 if (cw.index&2)==0
         end
       end
       pbPlayCursorSE if cw.index!=oldIndex
